@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>趣味数学 - 工程问题与比例分配</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+        h3 {
+            color: #16a085;
+            margin-top: 20px;
+        }
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .rule {
+            background-color: #f1f9fe;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid #3498db;
+        }
+        .example {
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border: 1px solid #e0e0e0;
+        }
+        .question {
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 12px 0 5px 0;
+        }
+        .answer {
+            color: #27ae60;
+            margin-left: 20px;
+            padding-left: 10px;
+            border-left: 2px solid #2ecc71;
+        }
+        
+        /* 工程问题动画 */
+        .engineering-animation {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .worker {
+            width: 60px;
+            height: 80px;
+            position: relative;
+            margin: 0 20px;
+        }
+        .worker-head {
+            width: 30px;
+            height: 30px;
+            background-color: #f5d7b5;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 15px;
+        }
+        .worker-body {
+            width: 30px;
+            height: 40px;
+            background-color: #3498db;
+            position: absolute;
+            top: 30px;
+            left: 15px;
+            border-radius: 5px;
+        }
+        .worker-arm {
+            width: 10px;
+            height: 30px;
+            background-color: #f5d7b5;
+            position: absolute;
+            top: 35px;
+        }
+        .left-arm {
+            left: 5px;
+            transform-origin: top center;
+            animation: arm-swing 2s infinite alternate;
+        }
+        .right-arm {
+            right: 5px;
+            transform-origin: top center;
+            animation: arm-swing 2s infinite alternate-reverse;
+        }
+        .progress-bar {
+            width: 80%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #2ecc71;
+            width: 0%;
+            animation: progress 8s linear infinite;
+        }
+        
+        /* 比例问题动画 */
+        .ratio-animation {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            margin: 20px auto;
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .ratio-bar {
+            width: 80%;
+            height: 30px;
+            display: flex;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .ratio-part {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+        .ratio-scale {
+            width: 80%;
+            height: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .scale-point {
+            width: 15px;
+            height: 15px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+        }
+        .scale-line {
+            flex-grow: 1;
+            height: 2px;
+            background-color: #333;
+            margin: 0 10px;
+        }
+        
+        /* 动画关键帧 */
+        @keyframes arm-swing {
+            from { transform: rotate(-20deg); }
+            to { transform: rotate(20deg); }
+        }
+        @keyframes progress {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+        @keyframes ratio-change {
+            0% { width: 30%; }
+            50% { width: 50%; }
+            100% { width: 30%; }
+        }
+        
+        .math-formula {
+            font-size: 18px;
+            text-align: center;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+<h1>趣味数学27</h1>
+
+<div class="section">
+    <h2>工程问题</h2>
+    
+    <h3>1. 简单工程问题</h3>
+    
+    <div class="engineering-animation">
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+            <div style="display: flex; justify-content: center; width: 100%;">
+                <div class="worker">
+                    <div class="worker-head"></div>
+                    <div class="worker-body"></div>
+                    <div class="worker-arm left-arm"></div>
+                    <div class="worker-arm right-arm"></div>
+                </div>
+                <div style="width: 40px;"></div>
+                <div class="worker">
+                    <div class="worker-head"></div>
+                    <div class="worker-body" style="background-color: #e74c3c;"></div>
+                    <div class="worker-arm left-arm"></div>
+                    <div class="worker-arm right-arm"></div>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="math-formula">合作效率 = 甲效率 + 乙效率</div>
+        </div>
+    </div>
+    
+    <div class="rule">
+        <strong>简单工程问题规则：</strong>
+        <ul>
+            <li>工作量 = 工作效率 × 工作时间</li>
+            <li>合作效率 = 各人效率之和</li>
+            <li>通常设总工作量为1（单位工作）</li>
+        </ul>
+    </div>
+    
+    <div class="example">
+        <div class="question">甲单独完成工作需要10天，乙单独完成工作需要10天，甲乙合作完成工作需要多少天？</div>
+        <div class="answer">5天</div>
+        
+        <div class="question">甲单独完成需要12天，乙单独完成需要18天，丙单独完成需要24天，三人合作需要多少天？</div>
+        <div class="answer">6天</div>
+        
+        <div class="question">甲单独完成要15天，乙单独完成要25天。合作5天后，甲效率降低1/3，乙效率提高1/5，完成剩余工作需要多少天？</div>
+        <div class="answer">4天</div>
+    </div>
+    
+    <h3>2. 复杂工程问题</h3>
+    
+    <div class="engineering-animation">
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+            <div style="display: flex; justify-content: center; width: 100%;">
+                <div class="worker">
+                    <div class="worker-head"></div>
+                    <div class="worker-body"></div>
+                    <div class="worker-arm left-arm"></div>
+                    <div class="worker-arm right-arm"></div>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 33%; background-color: #3498db;"></div>
+            </div>
+            <div style="display: flex; justify-content: center; width: 100%; margin-top: 20px;">
+                <div class="worker">
+                    <div class="worker-head"></div>
+                    <div class="worker-body"></div>
+                    <div class="worker-arm left-arm"></div>
+                    <div class="worker-arm right-arm"></div>
+                </div>
+                <div style="width: 40px;"></div>
+                <div class="worker">
+                    <div class="worker-head"></div>
+                    <div class="worker-body" style="background-color: #e74c3c;"></div>
+                    <div class="worker-arm left-arm"></div>
+                    <div class="worker-arm right-arm"></div>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="animation: progress 5s linear infinite; background-color: #2ecc71;"></div>
+            </div>
+            <div class="math-formula">分段工作：先单独后合作</div>
+        </div>
+    </div>
+    
+    <div class="rule">
+        <strong>复杂工程问题规则：</strong>
+        <ul>
+            <li>分段工作：按时间段计算完成的工作量</li>
+            <li>效率变化：注意不同时间段的效率变化</li>
+            <li>剩余工作量 = 总工作量 - 已完成工作量</li>
+        </ul>
+    </div>
+    
+    <div class="example">
+        <div class="question">甲效率是乙的2倍，乙单独完成要18天，两人合作需要多少天？</div>
+        <div class="answer">6天</div>
+        
+        <div class="question">甲单独要30天，乙单独要20天。甲先做10天后乙加入，还需多少天？</div>
+        <div class="answer">8天</div>
+        
+        <div class="question">甲乙合作8天可完成。实际合作5天后，甲效率降低50%，乙效率提高20%，最终多用2天完成。求乙单独完成时间？</div>
+        <div class="answer">24天</div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>比例与比例分配</h2>
+    
+    <h3>1. 比例基本概念</h3>
+    
+    <div class="ratio-animation">
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+            <div class="ratio-scale">
+                <div class="scale-point"></div>
+                <div class="scale-line"></div>
+                <div class="scale-point"></div>
+                <div class="scale-line"></div>
+                <div class="scale-point"></div>
+                <div class="scale-line"></div>
+                <div class="scale-point"></div>
+            </div>
+            <div class="ratio-bar">
+                <div class="ratio-part" style="background-color: #3498db; width: 30%;">3</div>
+                <div class="ratio-part" style="background-color: #e74c3c; width: 40%;">4</div>
+                <div class="ratio-part" style="background-color: #2ecc71; width: 30%;">10</div>
+            </div>
+            <div class="math-formula">a : b : c = 3 : 4 : 10</div>
+        </div>
+    </div>
+    
+    <div class="rule">
+        <strong>比例基本规则：</strong>
+        <ul>
+            <li>比例表示两个比相等的关系</li>
+            <li>比例的性质：内项积等于外项积</li>
+            <li>连比：通过中间量统一比例关系</li>
+        </ul>
+    </div>
+    
+    <div class="example">
+        <div class="question">若a:b=3:4，b:c=2:5，求a:b:c是多少？</div>
+        <div class="answer">3:4:10</div>
+        
+        <div class="question">已知 m:n = 5:3，n:p = 1/2:1/3，求 m:n:p</div>
+        <div class="answer">5:3:2</div>
+        
+        <div class="question">已知 a:b = 2:3，b:c = 4:5，c:d = 6:7，求 a:b:c:d</div>
+        <div class="answer">16:24:30:35</div>
+    </div>
+    
+    <h3>2. 比例分配</h3>
+    
+    <div class="ratio-animation">
+        <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+            <div class="ratio-bar" style="width: 60%;">
+                <div class="ratio-part" style="background-color: #3498db; width: 37.5%;">小山羊：3</div>
+                <div class="ratio-part" style="background-color: #e74c3c; width: 62.5%;">鹿宝宝：5</div>
+            </div>
+            <div style="margin-top: 20px; text-align: center;">
+                <div>总草量：160捆</div>
+            
+                </div>
+            </div>
+            
+    </div>
+    
+    <div class="rule">
+        <strong>比例分配规则：</strong>
+        <ul>
+            <li>按比例分配总量：先求总份数，再求每份量，最后求各部分量</li>
+            <li>比例变化问题：抓住不变量建立方程</li>
+        </ul>
+    </div>
+    
+    <div class="example">
+        <div class="question">小山羊和鹿宝宝共有160捆草，比例为3:5，小山羊有多少捆？</div>
+        <div class="answer">60捆</div>
+        
+        <div class="question">长方形长宽比为3:2，若长增加5cm、宽减少3cm，面积不变。求原长方形周长。</div>
+        <div class="answer">50cm</div>
+        
+        <div class="question">甲班比乙班多4人，
+甲班男生是女生的2倍，
+乙班女生是男生的3倍，
+男生比女生多种154棵树，
+求甲班有男生多少名？</div>
+        <div class="answer">28名</div>
+    </div>
+</div>
+</body>
+</html>
