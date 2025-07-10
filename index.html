@@ -47,23 +47,56 @@
             margin: 15px 0;
             border-left: 4px solid #3498db;
         }
+        .question {
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 15px 0 5px 0;
+        }
+        .answer-container {
+            background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
+            border: 1px solid #d1fae5;
+            border-radius: 8px;
+            padding: 5px 15px;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .answer-container:hover {
+            background: linear-gradient(135deg, #dcffe4 0%, #c6f6d5 100%);
+            transform: translateX(5px);
+        }
+        .answer-prompt {
+            color: #10b981;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+        }
+        .answer-prompt:before {
+            content: "✨";
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        .answer {
+            color: #0f9d58;
+            margin-left: 20px;
+            padding: 10px 15px;
+            background-color: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid #10b981;
+            border-radius: 0 8px 8px 0;
+            display: none;
+            font-weight: bold;
+            animation: fadeIn 0.5s ease;
+        }
+        .show-answer .answer {
+            display: block;
+        }
         .example {
             background-color: #f8f9fa;
             padding: 12px;
             border-radius: 6px;
             margin: 15px 0;
             border: 1px solid #e0e0e0;
-        }
-        .question {
-            font-weight: bold;
-            color: #e74c3c;
-            margin: 12px 0 5px 0;
-        }
-        .answer {
-            color: #27ae60;
-            margin-left: 20px;
-            padding-left: 10px;
-            border-left: 2px solid #2ecc71;
         }
         
         /* 工程问题动画 */
@@ -207,6 +240,11 @@
             text-align: center;
             margin: 15px 0;
         }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -252,13 +290,22 @@
     
     <div class="example">
         <div class="question">甲单独完成工作需要10天，乙单独完成工作需要10天，甲乙合作完成工作需要多少天？</div>
-        <div class="answer">5天</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">5天</div>
+        </div>
         
         <div class="question">甲单独完成需要12天，乙单独完成需要18天，丙单独完成需要24天，三人合作需要多少天？</div>
-        <div class="answer">6天</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">6天</div>
+        </div>
         
         <div class="question">甲单独完成要15天，乙单独完成要25天。合作5天后，甲效率降低1/3，乙效率提高1/5，完成剩余工作需要多少天？</div>
-        <div class="answer">4天</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">4天</div>
+        </div>
     </div>
     
     <h3>2. 复杂工程问题</h3>
@@ -309,13 +356,22 @@
     
     <div class="example">
         <div class="question">甲效率是乙的2倍，乙单独完成要18天，两人合作需要多少天？</div>
-        <div class="answer">6天</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">6天</div>
+        </div>
         
         <div class="question">甲单独要30天，乙单独要20天。甲先做10天后乙加入，还需多少天？</div>
-        <div class="answer">8天</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">8天</div>
+        </div>
         
         <div class="question">甲乙合作8天可完成。实际合作5天后，甲效率降低50%，乙效率提高20%，最终多用2天完成。求乙单独完成时间？</div>
-        <div class="answer">24天</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">24天</div>
+        </div>
     </div>
 </div>
 
@@ -355,13 +411,22 @@
     
     <div class="example">
         <div class="question">若a:b=3:4，b:c=2:5，求a:b:c是多少？</div>
-        <div class="answer">3:4:10</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">3:4:10</div>
+        </div>
         
         <div class="question">已知 m:n = 5:3，n:p = 1/2:1/3，求 m:n:p</div>
-        <div class="answer">5:3:2</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">5:3:2</div>
+        </div>
         
         <div class="question">已知 a:b = 2:3，b:c = 4:5，c:d = 6:7，求 a:b:c:d</div>
-        <div class="answer">16:24:30:35</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">16:24:30:35</div>
+        </div>
     </div>
     
     <h3>2. 比例分配</h3>
@@ -374,10 +439,8 @@
             </div>
             <div style="margin-top: 20px; text-align: center;">
                 <div>总草量：160捆</div>
-            
-                </div>
             </div>
-            
+        </div>
     </div>
     
     <div class="rule">
@@ -390,18 +453,39 @@
     
     <div class="example">
         <div class="question">小山羊和鹿宝宝共有160捆草，比例为3:5，小山羊有多少捆？</div>
-        <div class="answer">60捆</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">60捆</div>
+        </div>
         
         <div class="question">长方形长宽比为3:2，若长增加5cm、宽减少3cm，面积不变。求原长方形周长。</div>
-        <div class="answer">50cm</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">50cm</div>
+        </div>
         
         <div class="question">甲班比乙班多4人，
 甲班男生是女生的2倍，
 乙班女生是男生的3倍，
 男生比女生多种154棵树，
 求甲班有男生多少名？</div>
-        <div class="answer">28名</div>
+        <div class="answer-container">
+            <div class="answer-prompt">点击显示答案</div>
+            <div class="answer">28名</div>
+        </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 答案显示功能
+        document.body.addEventListener('click', function(e) {
+            const container = e.target.closest('.answer-container');
+            if(container) {
+                container.classList.toggle('show-answer');
+            }
+        });
+    });
+</script>
 </body>
 </html>
